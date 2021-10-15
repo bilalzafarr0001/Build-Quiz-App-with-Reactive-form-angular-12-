@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="row ol-md-6 col-sm-6 col-lg-5" style="margin: auto auto">
+  <div class="row" style="margin: auto auto">
     <h1 class="mt-4">{{ title }}</h1>
      <button type="button" class="btn btn-secondary" (click)="addQuestion()">
       Add Question
@@ -7,26 +7,29 @@
     <div>
       <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
             
-        <div formArrayName="questions">
+        <div formArrayName="questions" class="flex">
                 
           <div *ngFor="let question of questions().controls; let i = index">
                     
             <div
               [formGroupName]="i"
               style="
-                border: 5 solid black;
-                padding: 10px;
-                width: 600px;
-                margin: 5px;
+                border: 2 solid black;
+                padding: 6px;
+                width: 350px;
+
+                margin: 3px;
                 border-radius: 10%;
-                background-color: grey;
+                background-color: lightblue;
               "
             >
-              <div class="flex">
-                 <input
+               
+              <div style="display: flex">
+                <input
                   class="form-control"
                   type="text"
                   formControlName="question"
+                  placeholder="Enter the Question name..."
                 />
                 <br />
                 <button
@@ -37,7 +40,7 @@
                   Remove
                 </button>
               </div>
-                          
+                      
               <div formArrayName="options">
                             
                 <div
@@ -48,24 +51,28 @@
                 >
                                     
                   <div [formGroupName]="idx">
-                     <input
-                      class="form-control"
-                      type="text"
-                      formControlName="option"
-                    />
-                       <br /> 
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      (click)="removeQuestionOption(i, idx)"
-                    >
-                      Remove
-                    </button>
-                                  
+                    <div style="display: flex">
+                       <input
+                        class="form-control"
+                        type="text"
+                        formControlName="option"
+                        placeholder="Enter the option ..."
+                      />
+
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        (click)="removeQuestionOption(i, idx)"
+                      >
+                        Remove
+                      </button>
+                           
+                    </div>
+                             
                   </div>
                               
                 </div>
-                 
+                 <br />
                 <button
                   class="btn btn-primary"
                   type="button"
