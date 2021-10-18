@@ -1,6 +1,19 @@
-<div class="container-fluid">
+<div *ngIf="!attempt" class="container-fluid">
   <div class="row" style="margin: auto auto">
-    <h1 class="mt-4">{{ title }}</h1>
+    <div class="mt-4 text-center">
+      <img
+        style="width: 120px; height: 100px; border-radius: 50%"
+        src="https://image.freepik.com/free-vector/quiz-background-with-items-flat-design_23-2147599082.jpg"
+      />
+      <h1 class="mt-4" style="color: rgba(0, 0, 255, 0.644)">{{ title }}</h1>
+    </div>
+    <button
+      type="button"
+      class="btn btn-outline-success"
+      (click)="attemptQuiz()"
+    >
+      Attemp Quiz
+    </button>
      <button type="button" class="btn btn-secondary" (click)="addQuestion()">
       Add Question
     </button>
@@ -16,7 +29,7 @@
               style="
                 border: 2 solid black;
                 padding: 6px;
-                width: 350px;
+                width: 500px;
 
                 margin: 3px;
                 border-radius: 10%;
@@ -31,8 +44,20 @@
                   formControlName="question"
                   placeholder="Enter the Question name..."
                 />
-                <br />
+                <label class="form-check"
+                  >Choose Type Checkbox/Radio/Input</label
+                >
+                <select
+                  aria-label=".form-select-lg example"
+                  formControlName="chooseType"
+                >
+                  <option value="checkbox">Checkbox</option>
+                  <option value="radio">Radio</option>
+                  <option value="input">Input</option>
+                </select>
+
                 <button
+                  style="margin-left: 6px"
                   (click)="removeQuestion(i)"
                   type="button"
                   class="btn btn-danger"
@@ -58,17 +83,16 @@
                         formControlName="option"
                         placeholder="Enter the option ..."
                       />
-
                       <button
+                        style="margin-left: 6px"
                         type="button"
                         class="btn btn-danger"
                         (click)="removeQuestionOption(i, idx)"
                       >
-                        Remove
-                      </button>
-                           
+                        Remove</button
+                      > 
                     </div>
-                             
+                         
                   </div>
                               
                 </div>
@@ -81,20 +105,81 @@
                   Add Option</button
                 >        
               </div>
-                        
+                    
             </div>
-                  
+              
           </div>
-            
         </div>
             
         <button class="btn btn-info" type="submit">Submit</button>
-         
       </form>
     </div>
   </div>
 </div>
 
-       
-{{ this.quizForm.value | json }}
+<!-- {{ this.quizForm.value | json }} -->
+
+<div *ngIf="attempt" class="container-fluid">
+  <button class="m-4 btn btn-warning" type="button" (click)="goBack()">
+    Back
+  </button>
+  <div class="row">
+    <div class="mt-4 text-center">
+      <img
+        style="width: 120px; height: 120; border-radius: 50%"
+        src="https://image.similarpng.com/very-thumbnail/2020/12/Quiz-comic-pop-art-style-illustration-on-transparent-background-PNG.png"
+      />
+      <h1>Attempting Quiz</h1>
+    </div>
+    <div class="col">
+      <div *ngFor="let question of attemptQuestions; let i = index">
+        <div style="display: flex; margin: 5px" class="badge bg-dark">
+          <span style="padding-right: 10px">Question {{ i }} : </span>
+          <h3>{{ question.question }}</h3>
+        </div>
+        <br /><br />
+
+        <div *ngIf="question.chooseType === 'input'">
+          <label>Answer :</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Write your answer here ..."
+          />
+        </div>
+
+        <div class="row text-left options">
+          <div
+            class="col-md-6"
+            *ngFor="let option of question.options; let idx = index"
+          >
+            <div class="option">
+              <div
+                style="
+                  background-color: rgba(173, 216, 230, 0.897);
+                  padding: 20px;
+                  border-radius: 40px;
+                "
+              >
+                <label class="form-group">
+                  <input
+                    class="form-check-input"
+                    name="i"
+                    id="{{ idx }}"
+                    type="{{ question.chooseType }}"
+                    (click)="onclickHandler(option.option)"
+                  />
+                  {{ option.option }}
+                </label>
+                <br />
+              </div>
+              <br />
+            </div>
+          </div>
+        </div>
+        <br /><br />
+      </div>
+    </div>
+  </div>
+</div>
  

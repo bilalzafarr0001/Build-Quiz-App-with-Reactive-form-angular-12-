@@ -8,9 +8,10 @@ import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 })
 export class AppComponent {
   title = 'QUIZ APP';
-
+  attempt: boolean = false;
+  attemptQuestions: any;
   quizForm: FormGroup;
-
+  isInput = false;
   constructor(private fb: FormBuilder) {
     this.quizForm = this.fb.group({
       questions: this.fb.array([]),
@@ -23,6 +24,7 @@ export class AppComponent {
   newQuestion(): FormGroup {
     return this.fb.group({
       question: '',
+      chooseType: '',
       options: this.fb.array([]),
     });
   }
@@ -51,7 +53,26 @@ export class AppComponent {
   removeQuestionOption(questionIndex: number, optionIndex: number) {
     this.questionOptions(questionIndex).removeAt(optionIndex);
   }
+  attemptQuiz() {
+    this.attempt = true;
+    console.log('attemping quiz ....');
+    this.attemptQuestions = JSON.parse(
+      localStorage.getItem('questions') || '[]'
+    );
+    console.log('questions from local storage are ', this.attemptQuestions);
+  }
+  goBack() {
+    this.attempt = false;
+  }
+  onclickHandler(id: number) {
+    console.log('id is ', id);
+  }
+
   onSubmit() {
-    console.log(this.quizForm.value);
+    console.log('form values', this.quizForm.value.questions);
+    localStorage.setItem(
+      'questions',
+      JSON.stringify(this.quizForm.value.questions)
+    );
   }
 }
